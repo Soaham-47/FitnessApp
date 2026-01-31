@@ -1,1 +1,27 @@
-#FITNESS APP
+# Fitness Tracking Web App
+
+A full-stack fitness tracking platform built using Django that allows users to log workouts, track progress, and manage fitness goals.
+
+## Features
+- User authentication (signup/login)
+- Log daily workouts and exercises
+- Track fitness goals
+- View workout history
+- Responsive UI using HTML/CSS
+
+## Tech Stack
+- Backend: Django
+- Database: SQLite (can be replaced with PostgreSQL)
+- Frontend: HTML, CSS
+- Tools: Git
+
+## System Design
+The application follows Django’s MVT architecture.  
+Users interact with views that handle requests, store data in relational models, and render dynamic templates.
+
+## How to Run Locally
+```bash
+git clone https://github.com/Soaham-47/FitnessApp
+cd FitnessApp
+pip install -r requirements.txt
+python manage.py runserver
