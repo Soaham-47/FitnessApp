@@ -13,3 +13,6 @@ profile_pics/
 venv/
 env/
 .venv/
+
+#editor
+settings.json
