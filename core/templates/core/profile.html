@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - FitTrack{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-header">
+        {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile" class="profile-pic">
+        {% else %}
+            <div class="profile-pic"></div>
+        {% endif %}
+        
+        <div class="profile-info">
+            <h1 class="text-primary mb-2">{{ user.get_full_name|default:user.username }}</h1>
+            <p class="text-gray mb-3">{{ profile.bio|default:"No bio yet" }}</p>
+            
+            <div class="d-flex gap-3">
+                {% if profile.current_weight %}
+                <div class="stat-card">
+                    <strong>{{ profile.current_weight }} kg</strong>
+                    <span>Weight</span>
+                </div>
+                {% endif %}
+                
+                {% if profile.height %}
+                <div class="stat-card">
+                    <strong>{{ profile.height }} cm</strong>
+                    <span>Height</span>
+                </div>
+                {% endif %}
+                
+                {% if profile.age %}
+                <div class="stat-card">
+                    <strong>{{ profile.age }}</strong>
+                    <span>Age</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <h2 class="text-primary mb-3">🎯 Active Goals</h2>
+        {% if goals %}
+        <div class="grid-2">
+            {% for goal in goals %}
+            <div class="card goal-card">
+                <h3 class="text-primary">{{ goal.title }}</h3>
+                <p class="text-gray">{{ goal.description }}</p>
+                <div class="d-flex justify-between mt-2">
+                    <span class="badge badge-primary">{{ goal.get_goal_type_display }}</span>
+                    <span class="text-primary"><strong>{{ goal.progress_percentage }}%</strong></span>
+                </div>
+                <div class="progress-bar mt-2">
+                    <div class="progress-fill" style="width: {{ goal.progress_percentage }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No goals yet. <a href="{% url 'create_goal' %}" class="text-primary">Create your first goal!</a></p>
+        {% endif %}
+    </div>
+    
+    {% if achievements %}
+    <div class="card">
+        <h2 class="text-primary mb-3">🏆 Achievements</h2>
+        <div class="grid-4">
+            {% for achievement in achievements %}
+            <div class="achievement-card">
+                <div class="achievement-icon">{{ achievement.icon }}</div>
+                <h4 class="text-primary mt-2">{{ achievement.title }}</h4>
+                <p class="text-gray achievement-date">{{ achievement.earned_at|date:"M d, Y" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meal.name }} - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nutrition.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card mb-3">
+        <h1 class="text-primary mb-2">{{ meal.name }}</h1>
+        <p>{{ meal.description }}</p>
+        <div class="d-flex gap-2 flex-wrap mt-2">
+            <span class="badge badge-primary">🍽️ {{ meal.servings }} serving{{ meal.servings|pluralize }}</span>
+            <span class="badge">⏱️ Prep: {{ meal.prep_time }} min</span>
+            <span class="badge">🔥 Cook: {{ meal.cook_time }} min</span>
+            <span class="badge">📊 {{ meal.get_difficulty_display }}</span>
+            <span class="badge">🥘 {{ meal.get_meal_type_display }}</span>
+        </div>
+        
+        {% if meal.image %}
+        <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="recipe-image">
+        {% endif %}
+        
+        <div class="nutrition-grid">
+            <div class="nutrition-item">
+                <strong>{{ meal.calories }}</strong>
+                <span>Calories</span>
+            </div>
+            <div class="nutrition-item">
+                <strong>{{ meal.protein }}g</strong>
+                <span>Protein</span>
+            </div>
+            <div class="nutrition-item">
+                <strong>{{ meal.carbs }}g</strong>
+                <span>Carbs</span>
+            </div>
+            <div class="nutrition-item">
+                <strong>{{ meal.fats }}g</strong>
+                <span>Fats</span>
+            </div>
+            {% if meal.fiber %}
+            <div class="nutrition-item">
+                <strong>{{ meal.fiber }}g</strong>
+                <span>Fiber</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <a href="{% url 'add_meal_log' %}?recipe_id={{ meal.id }}" class="btn btn-success">Add to Today's Log</a>
+    </div>
+    
+    <div class="card mb-3">
+        <h2 class="text-primary mb-3">Ingredients</h2>
+        <ul class="ingredients-list">
+            {% for ingredient in ingredients_list %}
+                {% if ingredient.strip %}
+                <li>{{ ingredient }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h2 class="text-primary mb-3">Instructions</h2>
+        <ol class="instructions-list">
+            {% for instruction in instructions_list %}
+                {% if instruction.strip %}
+                <li>{{ instruction }}</li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endblock %}

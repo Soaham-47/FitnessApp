@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - FitTrack{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-white mb-4">Welcome back, {{ user.first_name|default:user.username }}!</h1>
+    
+    <div class="grid-3">
+        <div class="card">
+            <h2 class="text-primary mb-2">📊 This Week's Stats</h2>
+            <div class="stat-card mb-2">
+                <strong>{{ stats.workouts_completed }}/{{ stats.workouts_planned }}</strong>
+                <span>Workouts</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ stats.workout_percentage }}%"></div>
+            </div>
+            
+            <div class="d-flex justify-between mt-3">
+                <div class="text-center">
+                    <strong class="text-primary">{{ stats.calories_burned }}</strong>
+                    <p class="text-gray">Calories</p>
+                </div>
+                <div class="text-center">
+                    <strong class="text-primary">{{ stats.active_days }}/7</strong>
+                    <p class="text-gray">Active Days</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="text-primary mb-2">🎯 Active Goals</h2>
+            {% if active_goals %}
+                {% for goal in active_goals %}
+                <div class="mb-3">
+                    <div class="d-flex justify-between mb-1">
+                        <span>{{ goal.title }}</span>
+                        <span class="badge badge-primary">{{ goal.progress_percentage }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ goal.progress_percentage }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No active goals. <a href="{% url 'create_goal' %}" class="text-primary">Create one!</a></p>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h2 class="text-primary mb-3">⚡ Quick Actions</h2>
+            <a href="{% url 'workouts' %}" class="btn btn-primary btn-block mb-2">🏋️ Start Workout</a>
+            <a href="{% url 'meals' %}" class="btn btn-primary btn-block mb-2">🥗 View Meals</a>
+            <a href="{% url 'log_progress' %}" class="btn btn-primary btn-block">📝 Log Progress</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

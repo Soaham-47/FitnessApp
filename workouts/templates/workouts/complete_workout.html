@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Complete Workout - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/workouts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h2>🎉 Complete Workout</h2>
+        <p class="text-gray">Great job finishing your workout!</p>
+        
+        <div class="card mt-3 mb-3">
+            <strong>Workout:</strong> {{ session.workout.name }}<br>
+            <strong>Started:</strong> {{ session.started_at|time:"g:i A" }}
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration_minutes">Actual Duration (minutes)</label>
+                    <input type="number" name="duration_minutes" id="duration_minutes" 
+                           value="{{ session.workout.duration }}" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="calories_burned">Calories Burned</label>
+                    <input type="number" name="calories_burned" id="calories_burned" 
+                           value="{{ session.workout.estimated_calories }}" min="0" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>How difficult was it?</label>
+                <div class="d-flex gap-2 justify-between">
+                    {% for i in "12345" %}
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="difficulty_rating" value="{{ i }}" required>
+                        <span style="font-size: 2rem;">⭐</span>
+                    </label>
+                    {% endfor %}
+                </div>
+                <small class="text-gray">1 = Very Easy, 5 = Very Hard</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea name="notes" id="notes" placeholder="How did you feel? Any challenges?"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-success btn-block">Complete Workout 💪</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

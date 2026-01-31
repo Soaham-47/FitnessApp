@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nutrition Log - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nutrition.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card mb-3">
+        <h1 class="text-primary mb-2">Nutrition Log</h1>
+        
+        <div class="date-nav">
+            <a href="?date={{ prev_date }}">← Previous</a>
+            <span>{{ log_date }}</span>
+            <a href="?date={{ next_date }}">Next →</a>
+        </div>
+        
+        <div class="nutrition-grid">
+            <div class="nutrition-item">
+                <strong>{{ log.total_calories }}</strong>
+                <span>Calories</span>
+            </div>
+            <div class="nutrition-item">
+                <strong>{{ log.total_protein }}</strong>
+                <span>Protein (g)</span>
+            </div>
+            <div class="nutrition-item">
+                <strong>{{ log.total_carbs }}</strong>
+                <span>Carbs (g)</span>
+            </div>
+            <div class="nutrition-item">
+                <strong>{{ log.total_fats }}</strong>
+                <span>Fats (g)</span>
+            </div>
+        </div>
+        
+        <a href="{% url 'add_meal_log' %}" class="btn btn-primary">+ Add Meal</a>
+    </div>
+    
+    <div class="card mb-3">
+        <h2 class="text-primary mb-3">Today's Meals</h2>
+        
+        {% for meal in meals %}
+        <div class="meal-entry">
+            <div class="meal-info">
+                <h3 class="text-primary">{{ meal.get_meal_type_display }}: {{ meal.meal_name }}</h3>
+                <div class="meal-macros">
+                    <span>{{ meal.calories }} cal</span>
+                    <span>{{ meal.protein }}g protein</span>
+                    <span>{{ meal.carbs }}g carbs</span>
+                    <span>{{ meal.fats }}g fats</span>
+                    {% if meal.time %}<span>🕐 {{ meal.time }}</span>{% endif %}
+                </div>
+                {% if meal.notes %}
+                <p class="text-gray mt-2"><em>{{ meal.notes }}</em></p>
+                {% endif %}
+            </div>
+            <a href="{% url 'delete_meal_log' meal.id %}" class="btn btn-danger" onclick="return confirm('Delete this meal?')">Delete</a>
+        </div>
+        {% empty %}
+        <p>No meals logged yet. Add your first meal!</p>
+        {% endfor %}
+    </div>
+    
+    <div class="card water-tracker">
+        <h2 class="text-primary mb-3">💧 Water Intake</h2>
+        <form method="post" action="{% url 'update_water_intake' %}" class="water-form">
+            {% csrf_token %}
+            <input type="hidden" name="date" value="{{ log_date }}">
+            <input type="number" step="0.1" name="water_intake" value="{{ log.water_intake }}" placeholder="Liters" required>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

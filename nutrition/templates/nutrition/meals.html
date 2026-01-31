@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meals - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nutrition.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Meal Plans</h1>
+        <p>Fuel your fitness journey with nutritious meals</p>
+        <a href="{% url 'create_recipe' %}" class="btn btn-primary mt-2">+ Create New Recipe</a>
+    </div>
+    
+    <div class="grid-3">
+        {% for meal in meals %}
+        <div class="card meal-card">
+            {% if meal.image %}
+                <img src="{{ meal.image.url }}" alt="{{ meal.name }}" class="meal-image">
+            {% endif %}
+            <h3 class="text-primary">{{ meal.name }}</h3>
+            <p class="text-gray">{{ meal.description|truncatewords:15 }}</p>
+            <div class="nutrition-grid">
+                <div class="nutrition-item">
+                    <strong>{{ meal.calories }}</strong>
+                    <span>Calories</span>
+                </div>
+                <div class="nutrition-item">
+                    <strong>{{ meal.protein }}g</strong>
+                    <span>Protein</span>
+                </div>
+                <div class="nutrition-item">
+                    <strong>{{ meal.carbs }}g</strong>
+                    <span>Carbs</span>
+                </div>
+            </div>
+            <a href="{% url 'meal_detail' meal.id %}" class="btn btn-primary btn-block">View Recipe</a>
+        </div>
+        {% empty %}
+        <div class="card text-center p-4">
+            <h2 class="text-primary mb-2">No recipes available yet</h2>
+            <p class="mb-3">Create your first recipe!</p>
+            <a href="{% url 'create_recipe' %}" class="btn btn-primary">Create Recipe</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

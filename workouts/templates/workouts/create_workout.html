@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Workout - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/workouts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h2>Create New Workout</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="name">Workout Name</label>
+                <input type="text" name="name" id="name" placeholder="e.g., Full Body Blast" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" placeholder="Describe what this workout focuses on..." required></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="difficulty">Difficulty</label>
+                    <select name="difficulty" id="difficulty" required>
+                        <option value="">Select difficulty...</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal">Goal</label>
+                    <select name="goal" id="goal" required>
+                        <option value="">Select goal...</option>
+                        <option value="weight_loss">Weight Loss</option>
+                        <option value="muscle_gain">Muscle Gain</option>
+                        <option value="strength">Strength</option>
+                        <option value="endurance">Endurance</option>
+                        <option value="flexibility">Flexibility</option>
+                        <option value="general">General Fitness</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration">Duration (minutes)</label>
+                    <input type="number" name="duration" id="duration" min="5" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="estimated_calories">Estimated Calories Burned</label>
+                    <input type="number" name="estimated_calories" id="estimated_calories" min="0" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Workout Image (optional)</label>
+                <input type="file" name="image" id="image" accept="image/*">
+            </div>
+            
+            <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" name="is_public" id="is_public" checked style="width: auto;">
+                    Make this workout public (others can see it)
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Create Workout</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

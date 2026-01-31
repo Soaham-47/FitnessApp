@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ workout.name }} - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/workouts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card mb-4">
+        <h1 class="text-primary mb-2">{{ workout.name }}</h1>
+        <p>{{ workout.description }}</p>
+        <div class="workout-stats mt-3">
+            <div class="stat-box">
+                <strong>{{ workout.duration }}</strong>
+                <span>Minutes</span>
+            </div>
+            <div class="stat-box">
+                <strong>{{ workout.difficulty|title }}</strong>
+                <span>Difficulty</span>
+            </div>
+            <div class="stat-box">
+                <strong>{{ workout.get_goal_display }}</strong>
+                <span>Goal</span>
+            </div>
+            <div class="stat-box">
+                <strong>{{ workout.estimated_calories }}</strong>
+                <span>Calories</span>
+            </div>
+        </div>
+        <a href="{% url 'start_workout' workout.id %}" class="btn btn-success btn-block mt-3">Start This Workout</a>
+    </div>
+    
+    <div class="card">
+        <h2 class="text-primary mb-3">Exercises</h2>
+        {% for we in workout_exercises %}
+        <div class="exercise-item">
+            <div class="d-flex align-center gap-2">
+                <span class="exercise-number">{{ forloop.counter }}</span>
+                <div style="flex: 1;">
+                    <h3>{{ we.exercise.name }}</h3>
+                    <p class="text-gray">{{ we.exercise.description|truncatewords:30 }}</p>
+                    <div class="exercise-details">
+                        {% if we.sets %}<span class="badge badge-primary">{{ we.sets }} sets</span>{% endif %}
+                        {% if we.reps %}<span class="badge badge-primary">{{ we.reps }} reps</span>{% endif %}
+                        {% if we.duration %}<span class="badge badge-primary">{{ we.duration }}s</span>{% endif %}
+                        <span class="badge">Rest: {{ we.rest_time }}s</span>
+                    </div>
+                    {% if we.notes %}
+                    <p class="text-gray mt-2"><em>{{ we.notes }}</em></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No exercises added yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

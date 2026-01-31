@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Recipe - FitTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nutrition.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h2>Create New Recipe</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <h3 class="section-header">Basic Information</h3>
+            
+            <div class="form-group">
+                <label for="name">Recipe Name</label>
+                <input type="text" name="name" id="name" placeholder="e.g., Grilled Chicken Salad" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" placeholder="Brief description of the dish..." required></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="meal_type">Meal Type</label>
+                    <select name="meal_type" id="meal_type" required>
+                        <option value="">Select type...</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snack">Snack</option>
+                        <option value="post_workout">Post-Workout</option>
+                        <option value="pre_workout">Pre-Workout</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="difficulty">Difficulty</label>
+                    <select name="difficulty" id="difficulty" required>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+            
+            <h3 class="section-header">Nutrition Information (per serving)</h3>
+            
+            <div class="grid-4">
+                <div class="form-group">
+                    <label for="calories">Calories</label>
+                    <input type="number" name="calories" id="calories" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="protein">Protein (g)</label>
+                    <input type="number" step="0.1" name="protein" id="protein" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="carbs">Carbs (g)</label>
+                    <input type="number" step="0.1" name="carbs" id="carbs" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fats">Fats (g)</label>
+                    <input type="number" step="0.1" name="fats" id="fats" min="0" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fiber">Fiber (g) - Optional</label>
+                    <input type="number" step="0.1" name="fiber" id="fiber" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="servings">Number of Servings</label>
+                    <input type="number" name="servings" id="servings" value="1" min="1" required>
+                </div>
+            </div>
+            
+            <h3 class="section-header">Timing</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="prep_time">Prep Time (minutes)</label>
+                    <input type="number" name="prep_time" id="prep_time" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cook_time">Cook Time (minutes)</label>
+                    <input type="number" name="cook_time" id="cook_time" min="0" required>
+                </div>
+            </div>
+            
+            <h3 class="section-header">Recipe Details</h3>
+            
+            <div class="form-group">
+                <label for="ingredients">Ingredients (one per line)</label>
+                <textarea name="ingredients" id="ingredients" placeholder="2 chicken breasts&#10;1 cup quinoa&#10;2 tbsp olive oil&#10;..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="instructions">Instructions (one step per line)</label>
+                <textarea name="instructions" id="instructions" placeholder="Preheat oven to 180°C&#10;Season chicken with salt and pepper&#10;Bake for 25 minutes..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Recipe Image (optional)</label>
+                <input type="file" name="image" id="image" accept="image/*">
+            </div>
+            
+            <h3 class="section-header">Dietary Tags</h3>
+            
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" name="is_vegetarian" id="is_vegetarian">
+                    <label for="is_vegetarian">Vegetarian</label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" name="is_vegan" id="is_vegan">
+                    <label for="is_vegan">Vegan</label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" name="is_gluten_free" id="is_gluten_free">
+                    <label for="is_gluten_free">Gluten Free</label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" name="is_dairy_free" id="is_dairy_free">
+                    <label for="is_dairy_free">Dairy Free</label>
+                </div>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" name="is_public" id="is_public" checked>
+                    <label for="is_public">Make Public</label>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block mt-3">Create Recipe</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
